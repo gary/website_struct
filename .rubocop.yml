@@ -1,0 +1,25 @@
+# Project-specific overrides
+
+# Personal preference: imo trailing periods tell the reader that the
+# chain continues on the next line
+Style/DotPosition:
+  EnforcedStyle: trailing
+  SupportedStyles:
+    - leading
+    - trailing
+
+# http://viget.com/extend/just-use-double-quoted-ruby-strings
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
+
+# Personal preference: imo trailing commas reduce the maintainence of Arrays,
+# Hashes, etc.
+Style/TrailingComma:
+  EnforcedStyleForMultiline: comma
+  SupportedStyles:
+    - comma
+    - consistent_comma
+    - no_comma

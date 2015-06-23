@@ -1,5 +1,5 @@
 require "website_struct/version"
 
+# :nodoc:
 module WebsiteStruct
-  # Your code goes here...
 end
