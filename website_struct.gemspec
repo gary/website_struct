@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Gary Iams"]
   spec.email         = ["ge.iams@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{Page crawler that generates a site map given a URL}
+  spec.description   = %q{Page crawler that, given a URL, generates a site map showing which static assets each page depends on and the links between pages}
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
