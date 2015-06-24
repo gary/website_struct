@@ -2,6 +2,7 @@
 /.yardoc
 /Gemfile.lock
 /_yardoc/
+/config/database.yml
 /coverage/
 /doc/
 /pkg/

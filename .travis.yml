@@ -1,4 +1,7 @@
 language: ruby
 rvm:
   - 2.2.2
-before_install: gem install bundler -v 1.10.4
+before_install: 
+  - gem install bundler -v 1.10.4
+  - psql -c 'CREATE DATABASE website_struct_test;' -U postgres
+  - cp config/database.yml.example config/database.yml

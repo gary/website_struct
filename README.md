@@ -4,6 +4,30 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 
 TODO: Delete this and the text above, and describe your gem
 
+## Prerequisites
+
+* [`postgresql`](http://www.postgresql.org/)
+
+## Setup
+
+Before you can use this gem, you must set up the database it uses
+during executionn. To do so:
+
+1) Configure your postgresql database to have a `website_struct` user:
+
+    `$ createuser -d -P website_struct`
+
+2) Instate the app's database configuration:
+
+    `$ cp config/database.yml.example config/database.yml`
+
+3) Add the password you entered in 1) to both adapter configurations
+   in [`config/database.yml`](https://github.com/gary/website_struct/blob/master/config/database.yml.example)
+
+4) Create the databases
+
+    `$ bundle exec rake db:create`
+
 ## Installation
 
 Add this line to your application's Gemfile:

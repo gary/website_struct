@@ -1,0 +1,15 @@
+development:
+  adapter: postgresql
+  database: website_struct_development
+  encoding: unicode
+  port: 5432
+  host: localhost
+  user: website_struct
+
+test:
+  adapter: postgresql
+  database: website_struct_test
+  encoding: unicode
+  port: 5432
+  host: localhost
+  user: postgres
