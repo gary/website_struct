@@ -33,12 +33,13 @@ DESC
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activerecord", "~> 4.2.3"
+  spec.add_dependency "addressable", "~> 2.3.8"
   spec.add_dependency "pg"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "codeclimate-test-reporter"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec", "~> 3.3.0"
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "yard"
 end
