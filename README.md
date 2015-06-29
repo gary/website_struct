@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/gary/website_struct.svg?branch=master)](https://travis-ci.org/gary/website_struct)
 [![Code Climate](https://codeclimate.com/github/gary/website_struct/badges/gpa.svg)](https://codeclimate.com/github/gary/website_struct) [![Test Coverage](https://codeclimate.com/github/gary/website_struct/badges/coverage.svg)](https://codeclimate.com/github/gary/website_struct/coverage)
 
 # WebsiteStruct
