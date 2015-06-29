@@ -1,6 +1,7 @@
 language: ruby
 rvm:
   - 2.2.2
+
 addons:
   code_climate:
     repo_token: 875f544751d9ba64a7378617c14cd6a5989a73f5034622e80950f193a298991b
@@ -8,3 +9,5 @@ before_install:
   - gem install bundler -v 1.10.4
   - psql -c 'CREATE DATABASE website_struct_test;' -U postgres
   - cp config/database.yml.example config/database.yml
+notifications:
+  email: false
