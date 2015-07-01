@@ -132,7 +132,7 @@ modules=site&only=styles&skin=vector&*"
           "//en.wikipedia.org/w/load.php?debug=false&lang=en&\
 modules=site&only=styles&skin=vector&*"
         end
-        
+
         subject(:digital_ocean) do
           described_class.new("https://en.wikipedia.org/wiki/DigitalOcean")
         end
