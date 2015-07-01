@@ -1,6 +1,7 @@
 require "spec_helper"
 
 require "support/shared_contexts/web_page_crawler_fixture"
+require "support/vcr"
 
 require "website_struct/web_page_crawler"
 
@@ -70,6 +71,36 @@ describe WebPageCrawler do
           expect(subject.linked_pages).not_to include("/stylesheet.css")
         end
       end
+
+      context "live page", :vcr do
+        let(:twitter) do
+          "http://twitter.com/intent/user?screen_name=theregister"
+        end
+
+        subject { described_class.new("http://www.theregister.co.uk") }
+
+        it "includes relative links" do
+          expect(subject.linked_pages).
+            to include("/data_centre/").
+            and include("/weekend/").
+            and include("/about/company/privacy/")
+        end
+
+        it "includes absolute links in the host domain" do
+          expect(subject.linked_pages).
+            to include("http://www.theregister.co.uk/").
+            and include("http://m.theregister.co.uk/")
+        end
+
+        it "includes links outside the host domain" do
+          expect(subject.linked_pages).to include(twitter).
+            and include("http://www.facebook.com/VultureCentral")
+        end
+
+        it "excludes stylesheets" do
+          expect(subject.linked_pages).not_to include("/style_picker/design?b")
+        end
+      end
     end
   end
 
@@ -80,6 +111,14 @@ describe WebPageCrawler do
       context "test link fixture" do
         it "includes relative links to stylesheets" do
           expect(subject.stylesheets).to include("/stylesheet.css")
+        end
+      end
+
+      context "live page", :vcr do
+        subject { described_class.new("http://www.theregister.co.uk") }
+
+        it "includes relative links to stylesheets" do
+          expect(subject.stylesheets).to include("/style_picker/design?b")
         end
       end
     end
