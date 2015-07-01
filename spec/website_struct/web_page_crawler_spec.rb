@@ -49,8 +49,6 @@ describe WebPageCrawler do
 
   describe "#linked_pages" do
     context "its output" do
-      specify { expect(subject.linked_pages).to be_a_kind_of Enumerable }
-
       context "test link fixture" do
         it "includes relative links" do
           expect(subject.linked_pages).to include("/relative-a").
@@ -108,8 +106,6 @@ describe WebPageCrawler do
 
   describe "#stylesheets" do
     context "its output" do
-      specify { expect(subject.stylesheets).to be_a_kind_of Enumerable }
-
       context "test link fixture" do
         it "includes relative links to stylesheets" do
           expect(subject.stylesheets).to include("/explicit-type.css").
