@@ -67,6 +67,10 @@ describe WebPageCrawler do
             and include("https://orkut.com")
         end
 
+        it "excludes anchors" do
+          expect(subject.linked_pages).to exclude("#anchor")
+        end
+
         it "excludes stylesheets" do
           expect(subject.linked_pages).to exclude("/explicit-type.css").
             and exclude("//google.com/rel-no-type.css")
@@ -101,6 +105,10 @@ modules=site&only=styles&skin=vector&*"
         it "includes links outside the host domain" do
           expect(digital_ocean.linked_pages).to include(wikimedia).
             and include("//www.mediawiki.org/")
+        end
+
+        it "excludes anchors" do
+          expect(digital_ocean.linked_pages).to exclude("#anchor")
         end
 
         it "excludes stylesheets" do

@@ -22,7 +22,7 @@ module WebsiteStruct
 
     # @return [Set<String>] all linked pages on the page
     def linked_pages
-      @page.xpath("(//a[@href]|//link[@href])").
+      @page.xpath("(//a[not(starts-with(@href, '#'))]|//link[@href])").
         map { |a| a.attr("href") }.to_set -
         stylesheets
     end
