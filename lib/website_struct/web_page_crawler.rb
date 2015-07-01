@@ -22,7 +22,7 @@ module WebsiteStruct
 
     # @return [Set<String>] all linked pages on the page
     def linked_pages
-      @page.xpath("(//a[not(starts-with(@href, '#'))]|//link[@href])").
+      @page.xpath("(//a[#{not_anchors}]|//link[#{http_urls_only}])").
         map { |a| a.attr("href") }.to_set -
         stylesheets
     end
@@ -32,6 +32,14 @@ module WebsiteStruct
       @page.xpath("(//link[@type='text/css']|//link[@rel='stylesheet'])").
         map { |link| link.attr("href") }.
         to_set
+    end
+
+    private def http_urls_only
+      "starts-with(@href, 'http') or starts-with(@href, '/')"
+    end
+
+    private def not_anchors
+      "not(starts-with(@href, '#'))"
     end
 
     private def valid?(url)

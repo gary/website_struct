@@ -71,6 +71,10 @@ describe WebPageCrawler do
           expect(subject.linked_pages).to exclude("#anchor")
         end
 
+        it "excludes URLs with non-HTTP(S) schemes" do
+          expect(subject.linked_pages).to exclude("android-app://google.com")
+        end
+
         it "excludes stylesheets" do
           expect(subject.linked_pages).to exclude("/explicit-type.css").
             and exclude("//google.com/rel-no-type.css")
@@ -83,6 +87,11 @@ describe WebPageCrawler do
         let(:stylesheet) do
           "//en.wikipedia.org/w/load.php?debug=false&lang=en&\
 modules=site&only=styles&skin=vector&*"
+        end
+
+        let(:url_with_android_scheme) do
+          "android-app://org.wikipedia/http/en.m.wikipedia.org/wiki/\
+DigitalOcean"
         end
 
         subject(:digital_ocean) do
@@ -109,6 +118,11 @@ modules=site&only=styles&skin=vector&*"
 
         it "excludes anchors" do
           expect(digital_ocean.linked_pages).to exclude("#anchor")
+        end
+
+        it "excludes URLs with non-HTTP(S) schemes" do
+          expect(subject.linked_pages).
+            to exclude(url_with_android_scheme)
         end
 
         it "excludes stylesheets" do
