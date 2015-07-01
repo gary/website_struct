@@ -34,6 +34,7 @@ DESC
 
   spec.add_dependency "activerecord", "~> 4.2.3"
   spec.add_dependency "addressable", "~> 2.3.8"
+  spec.add_dependency "nokogiri", "~> 1.6.6"
   spec.add_dependency "pg"
 
   spec.add_development_dependency "bundler", "~> 1.10"
@@ -41,5 +42,7 @@ DESC
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.3.0"
   spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "vcr", "~> 2.9.3"
+  spec.add_development_dependency "webmock", "~> 1.21.0"
   spec.add_development_dependency "yard"
 end

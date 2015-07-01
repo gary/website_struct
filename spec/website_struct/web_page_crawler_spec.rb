@@ -1,21 +1,26 @@
 require "spec_helper"
 
+require "support/shared_contexts/web_page_crawler_fixture"
+
 require "website_struct/web_page_crawler"
 
 describe WebPageCrawler do
+  include_context "WebPageCrawler fixture - links.html"
+
   let(:crawler) { described_class }
+  let(:fake)    { double(open: "") }
 
   describe "#new" do
+    subject { described_class.new("https://google.com", fake) }
+
     context "valid input" do
       context "absolute URL with an HTTP scheme" do
-        subject { crawler.new("http://digitalocean.com") }
+        subject { described_class.new("http://google.com", fake) }
 
         it { is_expected.to be_an_instance_of WebPageCrawler }
       end
 
       context "absolute URL with an HTTPS scheme" do
-        subject { crawler.new("https://digitalocean.com") }
-
         it { is_expected.to be_an_instance_of WebPageCrawler }
       end
     end
@@ -35,6 +40,46 @@ describe WebPageCrawler do
       context "relative URL" do
         it "raises an ArgumentError" do
           expect { crawler.new("/foo") }.to raise_error ArgumentError
+        end
+      end
+    end
+  end
+
+  describe "#linked_pages" do
+    context "its output" do
+      specify { expect(subject.linked_pages).to be_a_kind_of Enumerable }
+
+      context "test link fixture" do
+        it "includes relative links" do
+          expect(subject.linked_pages).to include("/relative-a").
+            and include("/relative-a-ext.html").
+            and include("/relative-link")
+        end
+
+        it "includes absolute links in the host domain" do
+          expect(subject.linked_pages).to include("https://google.com").
+            and include("https://google.com/link")
+        end
+
+        it "includes links outside the host domain" do
+          expect(subject.linked_pages).to include("https://friendster.com").
+            and include("https://orkut.com")
+        end
+
+        it "excludes stylesheets" do
+          expect(subject.linked_pages).not_to include("/stylesheet.css")
+        end
+      end
+    end
+  end
+
+  describe "#stylesheets" do
+    context "its output" do
+      specify { expect(subject.stylesheets).to be_a_kind_of Enumerable }
+
+      context "test link fixture" do
+        it "includes relative links to stylesheets" do
+          expect(subject.stylesheets).to include("/stylesheet.css")
         end
       end
     end
