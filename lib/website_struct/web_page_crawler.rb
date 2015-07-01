@@ -23,14 +23,13 @@ module WebsiteStruct
     # @return [Set<String>] all linked pages on the page
     def linked_pages
       @page.xpath("(//a[@href]|//link[@href])").
-        map { |a| a.attr("href") }.
-        to_set -
+        map { |a| a.attr("href") }.to_set -
         stylesheets
     end
 
     # @return [Set<String] all stylesheets on the page
     def stylesheets
-      @page.xpath("//link[@type='text/css']").
+      @page.xpath("(//link[@type='text/css']|//link[@rel='stylesheet'])").
         map { |link| link.attr("href") }.
         to_set
     end

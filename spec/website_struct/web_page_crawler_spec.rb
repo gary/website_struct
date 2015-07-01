@@ -1,5 +1,6 @@
 require "spec_helper"
 
+require "support/matchers"
 require "support/shared_contexts/web_page_crawler_fixture"
 require "support/vcr"
 
@@ -68,7 +69,8 @@ describe WebPageCrawler do
         end
 
         it "excludes stylesheets" do
-          expect(subject.linked_pages).not_to include("/stylesheet.css")
+          expect(subject.linked_pages).to exclude("/explicit-type.css").
+            and exclude("//google.com/rel-no-type.css")
         end
       end
 
@@ -110,7 +112,8 @@ describe WebPageCrawler do
 
       context "test link fixture" do
         it "includes relative links to stylesheets" do
-          expect(subject.stylesheets).to include("/stylesheet.css")
+          expect(subject.stylesheets).to include("/explicit-type.css").
+            and include("//google.com/rel-no-type.css")
         end
       end
 
