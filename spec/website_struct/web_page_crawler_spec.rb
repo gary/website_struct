@@ -1,4 +1,5 @@
 require "spec_helper"
+require "rspec/collection_matchers"
 
 require "support/matchers"
 require "support/shared_contexts/web_page_crawler_fixture"
@@ -72,33 +73,38 @@ describe WebPageCrawler do
         end
       end
 
-      context "live page", :vcr do
-        let(:twitter) do
-          "http://twitter.com/intent/user?screen_name=theregister"
+      context "wikipedia", :vcr do
+        let(:wikimedia) { "//wikimediafoundation.org/" }
+
+        let(:stylesheet) do
+          "//en.wikipedia.org/w/load.php?debug=false&lang=en&\
+modules=site&only=styles&skin=vector&*"
         end
 
-        subject { described_class.new("http://www.theregister.co.uk") }
+        subject(:digital_ocean) do
+          described_class.new("https://en.wikipedia.org/wiki/DigitalOcean")
+        end
 
         it "includes relative links" do
-          expect(subject.linked_pages).
-            to include("/data_centre/").
-            and include("/weekend/").
-            and include("/about/company/privacy/")
+          expect(digital_ocean.linked_pages).
+            to include("/wiki/Techstars").
+            and include("/wiki/Seed_accelerator").
+            and include("/wiki/Amazon_Web_Services")
         end
 
         it "includes absolute links in the host domain" do
-          expect(subject.linked_pages).
-            to include("http://www.theregister.co.uk/").
-            and include("http://m.theregister.co.uk/")
+          expect(digital_ocean.linked_pages).
+            to include("//en.wikipedia.org/wiki/Wikipedia:Contact_us").
+            and include("https://en.wikipedia.org/wiki/DigitalOcean")
         end
 
         it "includes links outside the host domain" do
-          expect(subject.linked_pages).to include(twitter).
-            and include("http://www.facebook.com/VultureCentral")
+          expect(digital_ocean.linked_pages).to include(wikimedia).
+            and include("//www.mediawiki.org/")
         end
 
         it "excludes stylesheets" do
-          expect(subject.linked_pages).not_to include("/style_picker/design?b")
+          expect(digital_ocean.linked_pages).to exclude(stylesheet)
         end
       end
     end
@@ -113,12 +119,21 @@ describe WebPageCrawler do
         end
       end
 
-      context "live page", :vcr do
-        subject { described_class.new("http://www.theregister.co.uk") }
-
-        it "includes relative links to stylesheets" do
-          expect(subject.stylesheets).to include("/style_picker/design?b")
+      context "wikipedia", :vcr do
+        let(:stylesheet) do
+          "//en.wikipedia.org/w/load.php?debug=false&lang=en&\
+modules=site&only=styles&skin=vector&*"
         end
+        
+        subject(:digital_ocean) do
+          described_class.new("https://en.wikipedia.org/wiki/DigitalOcean")
+        end
+
+        it "includes absolute links to stylesheets" do
+          expect(digital_ocean.stylesheets).to include(stylesheet)
+        end
+
+        specify { expect(digital_ocean.stylesheets).to have(3).items }
       end
     end
   end

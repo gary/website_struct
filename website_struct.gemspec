@@ -41,6 +41,7 @@ DESC
   spec.add_development_dependency "codeclimate-test-reporter"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.3.0"
+  spec.add_development_dependency "rspec-collection_matchers", "~> 1.1.2"
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "vcr", "~> 2.9.3"
   spec.add_development_dependency "webmock", "~> 1.21.0"
