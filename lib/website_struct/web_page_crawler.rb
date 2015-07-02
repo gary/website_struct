@@ -51,7 +51,7 @@ module WebsiteStruct
     end
 
     private def http_urls_only
-      "starts-with(@href, 'http') or starts-with(@href, '/')"
+      "(starts-with(@href, 'http') or starts-with(@href, '/')) and not(@type)"
     end
 
     private def not_anchors
