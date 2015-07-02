@@ -49,107 +49,126 @@ describe WebPageCrawler do
   end
 
   describe "#linked_pages" do
-    context "its output" do
-      context "test link fixture" do
-        it "includes relative URLs" do
+    context "test link fixture" do
+      context "absolute URLs" do
+        context "host domain" do
+          specify do
+            expect(subject.linked_pages).to include("https://google.com").
+              and include("https://google.com/link")
+          end
+        end
+
+        context "outside the host domain" do
+          specify do
+            expect(subject.linked_pages).
+              to include("https://friendster.com").
+              and include("https://orkut.com")
+          end
+        end
+
+        context "with non-HTTP(S) schemes" do
+          specify do
+            expect(subject.linked_pages).
+              to exclude("android-app://google.com")
+          end
+        end
+      end
+
+      context "relative URLs" do
+        specify do
           expect(subject.linked_pages).to include("/relative-a").
             and include("/relative-a-ext.html").
             and include("/relative-link")
         end
+      end
+      
+      it "excludes anchors" do
+        expect(subject.linked_pages).to exclude("#anchor")
+      end
 
-        it "includes absolute URLs in the host domain" do
-          expect(subject.linked_pages).to include("https://google.com").
-            and include("https://google.com/link")
-        end
+      it "excludes a tags without hrefs" do
+        expect(subject.linked_pages).to exclude(nil)
+      end
 
-        it "includes absolute URLs outside the host domain" do
-          expect(subject.linked_pages).to include("https://friendster.com").
-            and include("https://orkut.com")
-        end
+      it "excludes news feeds" do
+        expect(subject.linked_pages).to exclude("/rss/feed-a.xml").
+          and exclude("http://foo.com/feed-link.rss")
+      end
 
-        it "excludes anchors" do
-          expect(subject.linked_pages).to exclude("#anchor")
-        end
+      it "excludes stylesheets" do
+        expect(subject.linked_pages).to exclude("/explicit-type.css").
+          and exclude("//google.com/rel-no-type.css")
+      end
+    end
 
-        it "excludes a tags without hrefs" do
-          expect(subject.linked_pages).to exclude(nil)
-        end
+    context "wikipedia", :vcr do
+      let(:atom_feed) do
+        "https://en.wikipedia.org/w/index.php?title=Special:RecentChanges\
+&feed=atom"
+      end
 
-        it "excludes URLs with non-HTTP(S) schemes" do
-          expect(subject.linked_pages).to exclude("android-app://google.com")
-        end
+      let(:wikimedia) { "//wikimediafoundation.org/" }
 
-        it "excludes news feeds" do
-          expect(subject.linked_pages).to exclude("/rss/feed-a.xml").
-            and exclude("http://foo.com/feed-link.rss")
-        end
+      let(:stylesheet) do
+        "//en.wikipedia.org/w/load.php?debug=false&lang=en&\
+modules=site&only=styles&skin=vector&*"
+      end
 
-        it "excludes stylesheets" do
-          expect(subject.linked_pages).to exclude("/explicit-type.css").
-            and exclude("//google.com/rel-no-type.css")
+      let(:url_with_android_scheme) do
+        "android-app://org.wikipedia/http/en.m.wikipedia.org/wiki/\
+DigitalOcean"
+      end
+
+      subject(:digital_ocean) do
+        described_class.new("https://en.wikipedia.org/wiki/DigitalOcean")
+      end
+
+      context "absolute URLs" do
+        context "host domain" do
+          specify do
+            expect(digital_ocean.linked_pages).
+              to include("//en.wikipedia.org/wiki/Wikipedia:Contact_us").
+              and include("https://en.wikipedia.org/wiki/DigitalOcean")
+          end
         end
       end
 
-      context "wikipedia", :vcr do
-        let(:atom_feed) do
-          "https://en.wikipedia.org/w/index.php?title=Special:RecentChanges\
-&feed=atom"
+      context "outside the host domain" do
+        specify do
+          expect(digital_ocean.linked_pages).to include(wikimedia).
+            and include("//www.mediawiki.org/")
         end
+      end
 
-        let(:wikimedia) { "//wikimediafoundation.org/" }
-
-        let(:stylesheet) do
-          "//en.wikipedia.org/w/load.php?debug=false&lang=en&\
-modules=site&only=styles&skin=vector&*"
+      context "with non-HTTP(S) schemes" do
+        specify do
+          expect(subject.linked_pages).to exclude(url_with_android_scheme)
         end
+      end
 
-        let(:url_with_android_scheme) do
-          "android-app://org.wikipedia/http/en.m.wikipedia.org/wiki/\
-DigitalOcean"
-        end
-
-        subject(:digital_ocean) do
-          described_class.new("https://en.wikipedia.org/wiki/DigitalOcean")
-        end
-
-        it "includes relative URLs" do
+      context "relative URLs" do
+        specify do
           expect(digital_ocean.linked_pages).
             to include("/wiki/Techstars").
             and include("/wiki/Seed_accelerator").
             and include("/wiki/Amazon_Web_Services")
         end
+      end
 
-        it "includes absolute URLs in the host domain" do
-          expect(digital_ocean.linked_pages).
-            to include("//en.wikipedia.org/wiki/Wikipedia:Contact_us").
-            and include("https://en.wikipedia.org/wiki/DigitalOcean")
-        end
+      it "excludes anchors" do
+        expect(digital_ocean.linked_pages).to exclude("#anchor")
+      end
 
-        it "includes absolute URLs outside the host domain" do
-          expect(digital_ocean.linked_pages).to include(wikimedia).
-            and include("//www.mediawiki.org/")
-        end
+      it "excludes a tags without hrefs" do
+        expect(subject.linked_pages).to exclude(nil)
+      end
 
-        it "excludes anchors" do
-          expect(digital_ocean.linked_pages).to exclude("#anchor")
-        end
+      it "excludes news feeds" do
+        expect(digital_ocean.linked_pages).to exclude(atom_feed)
+      end
 
-        it "excludes a tags without hrefs" do
-          expect(subject.linked_pages).to exclude(nil)
-        end
-
-        it "excludes URLs with non-HTTP(S) schemes" do
-          expect(subject.linked_pages).
-            to exclude(url_with_android_scheme)
-        end
-
-        it "excludes news feeds" do
-          expect(digital_ocean.linked_pages).to exclude(atom_feed)
-        end
-
-        it "excludes stylesheets" do
-          expect(digital_ocean.linked_pages).to exclude(stylesheet)
-        end
+      it "excludes stylesheets" do
+        expect(digital_ocean.linked_pages).to exclude(stylesheet)
       end
     end
   end

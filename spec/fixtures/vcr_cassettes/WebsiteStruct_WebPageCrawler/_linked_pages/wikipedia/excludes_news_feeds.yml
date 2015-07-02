@@ -21,11 +21,11 @@ http_interactions:
       Server:
       - nginx/1.9.2
       Date:
-      - Wed, 01 Jul 2015 22:53:11 GMT
+      - Thu, 02 Jul 2015 19:57:09 GMT
       Content-Type:
       - text/html; charset=UTF-8
       Content-Length:
-      - '14775'
+      - '14773'
       Connection:
       - keep-alive
       X-Content-Type-Options:
@@ -41,22 +41,22 @@ http_interactions:
       Last-Modified:
       - Sat, 27 Jun 2015 18:37:42 GMT
       X-Varnish:
-      - 3125739037 3124958218, 2272975279 2188193820
+      - 3252087047 3232563945, 1718707009 1676599087
       Via:
       - 1.1 varnish, 1.1 varnish
       Accept-Ranges:
       - bytes
       Age:
-      - '34017'
+      - '25142'
       X-Cache:
-      - cp1053 hit (2), cp1068 frontend hit (15)
+      - cp1053 hit (3), cp1065 frontend hit (20)
       Strict-Transport-Security:
-      - max-age=15768000
+      - max-age=31536000
       Cache-Control:
       - private, s-maxage=0, max-age=0, must-revalidate
       Set-Cookie:
       - GeoIP=US:OH:Cincinnati:39.2447:-84.3473:v4; Path=/; Domain=.wikipedia.org
-      - WMF-Last-Access=01-Jul-2015;Path=/;HttpOnly;Expires=Sun, 02 Aug 2015 12:00:00
+      - WMF-Last-Access=02-Jul-2015;Path=/;HttpOnly;Expires=Mon, 03 Aug 2015 12:00:00
         GMT
       X-Analytics:
       - page_id=42555353;ns=0;https=1
@@ -1389,8 +1389,8 @@ http_interactions:
         YW1wO29ubHk9c2NyaXB0c1x1MDAyNmFtcDtza2luPXZlY3Rvclx1MDAyNmFt
         cDsqXCJcdTAwM0VcdTAwM0Mvc2NyaXB0XHUwMDNFIik7Cn08L3NjcmlwdD4K
         PHNjcmlwdD5pZih3aW5kb3cubXcpewptdy5jb25maWcuc2V0KHsid2dCYWNr
-        ZW5kUmVzcG9uc2VUaW1lIjo3Nywid2dIb3N0bmFtZSI6Im13MTE4OCJ9KTsK
+        ZW5kUmVzcG9uc2VUaW1lIjo5NSwid2dIb3N0bmFtZSI6Im13MTA3NiJ9KTsK
         fTwvc2NyaXB0PgoJPC9ib2R5Pgo8L2h0bWw+Cg==
     http_version: 
-  recorded_at: Wed, 01 Jul 2015 22:53:11 GMT
+  recorded_at: Thu, 02 Jul 2015 19:57:09 GMT
 recorded_with: VCR 2.9.3

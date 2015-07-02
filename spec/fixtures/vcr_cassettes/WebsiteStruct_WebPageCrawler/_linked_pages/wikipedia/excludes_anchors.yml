@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.9.2
       Date:
-      - Thu, 02 Jul 2015 16:10:23 GMT
+      - Thu, 02 Jul 2015 19:57:09 GMT
       Content-Type:
       - text/html; charset=UTF-8
       Content-Length:
@@ -41,15 +41,15 @@ http_interactions:
       Last-Modified:
       - Sat, 27 Jun 2015 18:37:42 GMT
       X-Varnish:
-      - 3252087047 3232563945, 1676599087
+      - 3252087047 3232563945, 1718704637 1676599087
       Via:
       - 1.1 varnish, 1.1 varnish
       Accept-Ranges:
       - bytes
       Age:
-      - '11535'
+      - '25141'
       X-Cache:
-      - cp1053 hit (3), cp1065 frontend miss (0)
+      - cp1053 hit (3), cp1065 frontend hit (18)
       Strict-Transport-Security:
       - max-age=31536000
       Cache-Control:
@@ -1392,5 +1392,5 @@ http_interactions:
         ZW5kUmVzcG9uc2VUaW1lIjo5NSwid2dIb3N0bmFtZSI6Im13MTA3NiJ9KTsK
         fTwvc2NyaXB0PgoJPC9ib2R5Pgo8L2h0bWw+Cg==
     http_version: 
-  recorded_at: Thu, 02 Jul 2015 16:10:23 GMT
+  recorded_at: Thu, 02 Jul 2015 19:57:09 GMT
 recorded_with: VCR 2.9.3
