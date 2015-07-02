@@ -97,8 +97,17 @@ describe WebPageCrawler do
         end
       end
 
-      it "excludes anchors" do
-        expect(subject.linked_pages).to exclude("#anchor")
+      context "anchors" do
+        context "referring to the host page" do
+          specify { expect(subject.linked_pages).to exclude("#anchor") }
+        end
+
+        context "in URLs to other pages" do
+          specify do
+            expect(subject.linked_pages).
+              to include("/about#contact-us")
+          end
+        end
       end
 
       it "excludes a tags without hrefs" do
@@ -185,9 +194,18 @@ DigitalOcean"
             to include("/w/index.php?title=DigitalOcean&action=edit")
         end
       end
-      
-      it "excludes anchors" do
-        expect(digital_ocean.linked_pages).to exclude("#anchor")
+
+      context "anchors" do
+        context "referring to the host page" do
+          specify { expect(digital_ocean.linked_pages).to exclude("#mw-head") }
+        end
+
+        context "in URLs to other pages" do
+          specify do
+            expect(digital_ocean.linked_pages).
+              to include("/wiki/Infrastructure_as_a_service#Infrastructure")
+          end
+        end
       end
 
       it "excludes a tags without hrefs" do
