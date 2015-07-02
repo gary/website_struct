@@ -27,11 +27,26 @@ module WebsiteStruct
         stylesheets
     end
 
+    # @return [Set<String> all syndicated news feeds on the page
+    def news_feeds
+      @page.xpath("(//a[#{feed_extension}]|\
+//link[#{feed_mime_type} or #{xml_extension}])").
+        map { |a| a.attr("href") }.to_set
+    end
+
     # @return [Set<String] all stylesheets on the page
     def stylesheets
       @page.xpath("(//link[@type='text/css']|//link[@rel='stylesheet'])").
         map { |link| link.attr("href") }.
         to_set
+    end
+
+    private def feed_extension
+      "contains(@href, '.atom') or contains(@href, '.rss') or #{xml_extension}"
+    end
+
+    private def feed_mime_type
+      "@type='application/atom+xml' or @type='application/rss+xml'"
     end
 
     private def http_urls_only
@@ -44,6 +59,13 @@ module WebsiteStruct
 
     private def valid?(url)
       true if url.scheme =~ /\Ahttps?/
+    end
+
+    # @note Nokogiri uses libxml, which only supports XPath 1.0
+    #   functions. 'contains' is the best choice given that limitation
+    #   imo.
+    private def xml_extension
+      "contains(@href, '.xml')"
     end
   end
 end

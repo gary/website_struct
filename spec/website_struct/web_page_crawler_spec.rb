@@ -132,6 +132,48 @@ DigitalOcean"
     end
   end
 
+  describe "#news_feeds" do
+    context "its output" do
+      context "test fixture" do
+        context "from an a tag" do
+          let(:atom_from_a)         { "/atom/feed-a.atom" }
+          let(:generic_feed_from_a) { "/rss/feed-a.xml" }
+          let(:rss_from_a)          { "/rss/feed-a.rss" }
+
+          it "includes Atom feeds from href attributes" do
+            expect(subject.news_feeds).to include(atom_from_a)
+          end
+
+          it "includes RSS feeds from href attributes" do
+            expect(subject.news_feeds).to include(rss_from_a)
+          end
+
+          it "includes URLs from href attributes with XML extensions" do
+            expect(subject.news_feeds).to include(generic_feed_from_a)
+          end
+        end
+
+        context "from a link" do
+          let(:atom_from_link)         { "http://foo.com/feed-link.atom" }
+          let(:generic_feed_from_link) { "http://foo.com/feed-link.xml" }
+          let(:rss_from_link)          { "http://foo.com/feed-link.rss" }
+
+          it "includes Atom feeds from href attributes" do
+            expect(subject.news_feeds).to include(atom_from_link)
+          end
+
+          it "includes RSS feeds from href attributes" do
+            expect(subject.news_feeds).to include(rss_from_link)
+          end
+
+          it "includes URLs from href attributes with XML extensions" do
+            expect(subject.news_feeds).to include(generic_feed_from_link)
+          end
+        end
+      end
+    end
+  end
+
   describe "#stylesheets" do
     context "its output" do
       context "test link fixture" do
