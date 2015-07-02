@@ -91,6 +91,12 @@ describe WebPageCrawler do
         end
       end
 
+      context "URL with a query and fragment" do
+        specify do
+          expect(subject.linked_pages).to include("/labs?foo=bar")
+        end
+      end
+
       it "excludes anchors" do
         expect(subject.linked_pages).to exclude("#anchor")
       end
@@ -173,6 +179,13 @@ DigitalOcean"
         end
       end
 
+      context "URL with a query and fragment" do
+        specify do
+          expect(subject.linked_pages).
+            to include("/w/index.php?title=DigitalOcean&action=edit")
+        end
+      end
+      
       it "excludes anchors" do
         expect(digital_ocean.linked_pages).to exclude("#anchor")
       end
