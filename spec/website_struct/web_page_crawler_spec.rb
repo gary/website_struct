@@ -11,7 +11,8 @@ describe WebPageCrawler do
   include_context "WebPageCrawler fixture - links.html"
 
   let(:crawler) { described_class }
-  let(:fake)    { double(open: "") }
+  let(:fake)    {  double(open: "") }
+  vcr_options = { cassette_name: "wikipedia_entry" }
 
   describe "#new" do
     subject { described_class.new("https://google.com", fake) }
@@ -109,7 +110,7 @@ describe WebPageCrawler do
       end
     end
 
-    context "wikipedia", :vcr do
+    context "wikipedia", vcr: vcr_options do
       let(:atom_feed) do
         "https://en.wikipedia.org/w/index.php?title=Special:RecentChanges\
 &feed=atom"
@@ -285,7 +286,7 @@ DigitalOcean"
         end
       end
 
-      context "wikipedia", :vcr do
+      context "wikipedia", vcr: vcr_options do
         let(:stylesheet) do
           "//en.wikipedia.org/w/load.php?debug=false&lang=en&\
 modules=site&only=styles&skin=vector&*"
