@@ -22,28 +22,35 @@ module WebsiteStruct
 
     # @return [Set<String>] all linked pages on the page
     def linked_pages
-      @page.xpath("(//a[#{not_anchors}]|//link[#{http_urls_only}])").
-        map { |a| a.attr("href") }.to_set -
+      page_elements = "(//a[#{not_anchors}]|//link[#{http_urls_only}])"
+
+      hrefs(@page.xpath(page_elements)) -
         news_feeds -
         stylesheets
     end
 
     # @return [Set<String> all syndicated news feeds on the page
     def news_feeds
-      @page.xpath("(//a[#{feed_extension}]|\
-//link[#{feed_mime_type} or #{xml_extension}])").
-        map { |a| a.attr("href") }.to_set
+      feed_elements =
+        "(//a[#{feed_ext}]|\//link[#{feed_mime_type} or #{xml_ext}])"
+
+      hrefs(@page.xpath(feed_elements))
     end
 
     # @return [Set<String] all stylesheets on the page
     def stylesheets
-      @page.xpath("(//link[@type='text/css']|//link[@rel='stylesheet'])").
-        map { |link| link.attr("href") }.
-        to_set
+      stylesheet_elements =
+        "(//link[@type='text/css']|//link[@rel='stylesheet'])"
+
+      hrefs(@page.xpath(stylesheet_elements))
     end
 
-    private def feed_extension
-      "contains(@href, '.atom') or contains(@href, '.rss') or #{xml_extension}"
+    private def hrefs(elements)
+      elements.map { |a| a.attr("href") }.to_set
+    end
+
+    private def feed_ext
+      "contains(@href, '.atom') or contains(@href, '.rss') or #{xml_ext}"
     end
 
     private def feed_mime_type
@@ -65,7 +72,7 @@ module WebsiteStruct
     # @note Nokogiri uses libxml, which only supports XPath 1.0
     #   functions. 'contains' is the best choice given that limitation
     #   imo.
-    private def xml_extension
+    private def xml_ext
       "contains(@href, '.xml')"
     end
   end
