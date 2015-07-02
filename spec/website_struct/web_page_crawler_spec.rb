@@ -75,10 +75,18 @@ describe WebPageCrawler do
       end
 
       context "relative URLs" do
-        specify do
-          expect(subject.linked_pages).to include("/relative-a").
-            and include("/relative-a-ext.html").
-            and include("/relative-link")
+        context "path to a resource" do
+          specify do
+            expect(subject.linked_pages).to include("/relative-a").
+              and include("/relative-a-ext.html").
+              and include("/relative-link")
+          end
+        end
+
+        context "without a scheme" do
+          specify do
+            expect(subject.linked_pages).to include("//google.com/no-scheme")
+          end
         end
       end
       
@@ -147,11 +155,20 @@ DigitalOcean"
       end
 
       context "relative URLs" do
-        specify do
-          expect(digital_ocean.linked_pages).
-            to include("/wiki/Techstars").
-            and include("/wiki/Seed_accelerator").
-            and include("/wiki/Amazon_Web_Services")
+        context "path to a resource" do
+          specify do
+            expect(digital_ocean.linked_pages).
+              to include("/wiki/Techstars").
+              and include("/wiki/Seed_accelerator").
+              and include("/wiki/Amazon_Web_Services")
+          end
+        end
+
+        context "without a scheme" do
+          specify do
+            expect(subject.linked_pages).
+              to include("//creativecommons.org/licenses/by-sa/3.0/")
+          end
         end
       end
 
