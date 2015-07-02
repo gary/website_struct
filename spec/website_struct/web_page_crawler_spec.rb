@@ -171,6 +171,10 @@ DigitalOcean"
           end
         end
       end
+
+      context "http://www.intertwingly.net/wiki/pie/KnownAtomFeeds" do
+        pending("TODO: leverage MIME types")
+      end
     end
   end
 
