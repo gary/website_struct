@@ -134,13 +134,53 @@ DigitalOcean"
           expect(subject.linked_pages).
             to exclude(url_with_android_scheme)
         end
-        
+
         it "excludes news feeds" do
           expect(digital_ocean.linked_pages).to exclude(atom_feed)
         end
 
         it "excludes stylesheets" do
           expect(digital_ocean.linked_pages).to exclude(stylesheet)
+        end
+      end
+    end
+  end
+
+  describe "#linked_pages_in_domain" do
+    context "test link fixture" do
+      context "absolute URL" do
+        context "host domain" do
+          specify do
+            expect(subject.linked_pages_in_domain).
+              to include("https://google.com").
+              and include("https://google.com/link")
+          end
+        end
+
+        context "subdomain" do
+          specify do
+            expect(subject.linked_pages_in_domain).
+              to exclude("https://a.google.com").
+              and exclude("https://link.google.com")
+          end
+        end
+
+        context "outside host domain" do
+          specify do
+            expect(subject.linked_pages_in_domain).
+              to exclude("https://orkut.com").
+              and exclude("https://friendster.com")
+          end
+        end
+      end
+
+      context "relative URL" do
+        it "converts it to an absolute URL" do
+          expect(subject.linked_pages_in_domain).
+            to include("https://google.com/index.html").
+            and include("https://google.com/relative-link").
+            and include("https://google.com/relative-a-ext.html").
+            and include("https://google.com/relative-a")
         end
       end
     end

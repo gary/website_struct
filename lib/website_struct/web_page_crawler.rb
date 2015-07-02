@@ -29,6 +29,17 @@ module WebsiteStruct
         stylesheets
     end
 
+    # @return [Array<String>] all linked pages in the page's domain
+    def linked_pages_in_domain
+      linked_pages.each_with_object([]) do |url, linked_pages|
+        page_url = Addressable::URI.parse(url)
+
+        next if outside_domain?(page_url)
+
+        linked_pages << @url.join(page_url).to_s
+      end
+    end
+
     # @return [Set<String> all syndicated news feeds on the page
     def news_feeds
       feed_elements =
@@ -63,6 +74,10 @@ module WebsiteStruct
 
     private def not_anchors
       "not(starts-with(@href, '#'))"
+    end
+
+    private def outside_domain?(url)
+      url.absolute? && url.host != @url.host
     end
 
     private def valid?(url)
