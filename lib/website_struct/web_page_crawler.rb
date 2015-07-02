@@ -24,6 +24,7 @@ module WebsiteStruct
     def linked_pages
       @page.xpath("(//a[#{not_anchors}]|//link[#{http_urls_only}])").
         map { |a| a.attr("href") }.to_set -
+        news_feeds -
         stylesheets
     end
 

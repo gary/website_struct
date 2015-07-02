@@ -75,6 +75,11 @@ describe WebPageCrawler do
           expect(subject.linked_pages).to exclude("android-app://google.com")
         end
 
+        it "excludes news feeds" do
+          expect(subject.linked_pages).to exclude("/rss/feed-a.xml").
+            and exclude("http://foo.com/feed-link.rss")
+        end
+
         it "excludes stylesheets" do
           expect(subject.linked_pages).to exclude("/explicit-type.css").
             and exclude("//google.com/rel-no-type.css")
@@ -82,6 +87,11 @@ describe WebPageCrawler do
       end
 
       context "wikipedia", :vcr do
+        let(:atom_feed) do
+          "https://en.wikipedia.org/w/index.php?title=Special:RecentChanges\
+&feed=atom"
+        end
+
         let(:wikimedia) { "//wikimediafoundation.org/" }
 
         let(:stylesheet) do
@@ -123,6 +133,10 @@ DigitalOcean"
         it "excludes URLs with non-HTTP(S) schemes" do
           expect(subject.linked_pages).
             to exclude(url_with_android_scheme)
+        end
+        
+        it "excludes news feeds" do
+          expect(digital_ocean.linked_pages).to exclude(atom_feed)
         end
 
         it "excludes stylesheets" do
