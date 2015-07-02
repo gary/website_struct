@@ -90,7 +90,7 @@ describe WebPageCrawler do
           end
         end
       end
-      
+
       it "excludes anchors" do
         expect(subject.linked_pages).to exclude("#anchor")
       end
@@ -220,12 +220,39 @@ DigitalOcean"
       end
 
       context "relative URL" do
-        it "converts it to an absolute URL" do
-          expect(subject.linked_pages_in_domain).
-            to include("https://google.com/index.html").
-            and include("https://google.com/relative-link").
-            and include("https://google.com/relative-a-ext.html").
-            and include("https://google.com/relative-a")
+        context "relative to a resource" do
+          it "normalizes it to an absolute URL" do
+            expect(subject.linked_pages_in_domain).
+              to include("https://google.com/index.html").
+              and include("https://google.com/relative-link").
+              and include("https://google.com/relative-a-ext.html").
+              and include("https://google.com/relative-a")
+          end
+        end
+
+        context "without a scheme" do
+          context "host domain" do
+            it "normalizes it to an absolute URL" do
+              expect(subject.linked_pages_in_domain).
+                to include("https://google.com/no-scheme")
+            end
+          end
+
+          context "subdomain" do
+            specify do
+              expect(subject.linked_pages_in_domain).
+                to exclude("//drive.google.com/no-scheme").
+                and exclude("https://drive.google.com/no-scheme")
+            end
+          end
+
+          context "outside host domain" do
+            specify do
+              expect(subject.linked_pages_in_domain).
+                to exclude("//orkut.com/no-scheme").
+                and exclude("https://orkut.com/no-scheme")
+            end
+          end
         end
       end
     end

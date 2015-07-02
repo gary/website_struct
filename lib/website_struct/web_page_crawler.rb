@@ -77,7 +77,7 @@ module WebsiteStruct
     end
 
     private def outside_domain?(url)
-      url.absolute? && url.host != @url.host
+      url.host != @url.host if (url.relative? && url.host) || url.absolute?
     end
 
     private def valid?(url)
