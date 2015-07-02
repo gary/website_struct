@@ -71,6 +71,10 @@ describe WebPageCrawler do
           expect(subject.linked_pages).to exclude("#anchor")
         end
 
+        it "excludes a tags without hrefs" do
+          expect(subject.linked_pages).to exclude(nil)
+        end
+
         it "excludes URLs with non-HTTP(S) schemes" do
           expect(subject.linked_pages).to exclude("android-app://google.com")
         end
@@ -128,6 +132,10 @@ DigitalOcean"
 
         it "excludes anchors" do
           expect(digital_ocean.linked_pages).to exclude("#anchor")
+        end
+
+        it "excludes a tags without hrefs" do
+          expect(subject.linked_pages).to exclude(nil)
         end
 
         it "excludes URLs with non-HTTP(S) schemes" do

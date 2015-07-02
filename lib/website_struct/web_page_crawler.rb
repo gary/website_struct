@@ -73,7 +73,7 @@ module WebsiteStruct
     end
 
     private def not_anchors
-      "not(starts-with(@href, '#'))"
+      "@href and not(starts-with(@href, '#'))"
     end
 
     private def outside_domain?(url)
