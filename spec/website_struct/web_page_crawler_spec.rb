@@ -91,7 +91,7 @@ describe WebPageCrawler do
         end
       end
 
-      context "URL with a query and fragment" do
+      context "URL with a query" do
         specify do
           expect(subject.linked_pages).to include("/labs?foo=bar")
         end
@@ -188,10 +188,10 @@ DigitalOcean"
         end
       end
 
-      context "URL with a query and fragment" do
+      context "URL with a query" do
         specify do
           expect(subject.linked_pages).
-            to include("/w/index.php?title=DigitalOcean&action=edit")
+            to include("/w/index.php?title=Crunch_Fund&action=edit&redlink=1")
         end
       end
 
@@ -287,10 +287,21 @@ DigitalOcean"
         end
       end
 
-      context "URL with a query and fragment" do
-        it "gets normalized to an absolute URL with no query and fragment"  do
-          expect(subject.linked_pages_in_domain).to exclude("/labs?foo=bar").
-            and include("https://google.com/labs")
+      context "URL with a fragment" do
+        let(:fragment) { "https://google.com/about#contact-us" }
+
+        it "gets normalized to an absolute URL with no fragment" do
+          expect(subject.linked_pages_in_domain).to exclude(fragment).
+            and include("https://google.com/about")
+        end
+      end
+
+      context "URL with a query" do
+        let(:query) { "https://google.com/labs?foo=bar" }
+
+        it "gets normalized to an absolute URL with no query" do
+          expect(subject.linked_pages_in_domain).
+            to exclude(query).and include("https://google.com/labs")
         end
       end
     end
