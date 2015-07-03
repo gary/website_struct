@@ -517,4 +517,14 @@ modules=site&only=styles&skin=vector&*"
       end
     end
   end
+
+  describe "#to_s" do
+    subject { crawler.new("http://digitalocean.com", fake).to_s }
+
+    it { is_expected.to be_a String }
+
+    it "returns a (useful) representation of itself" do
+      expect(subject).to eq "http://digitalocean.com"
+    end
+  end
 end

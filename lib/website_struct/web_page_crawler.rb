@@ -71,6 +71,11 @@ module WebsiteStruct
       elements.map { |a| a.attr("href") }.to_set
     end
 
+    # @return [String] the URL of the web page to be crawled
+    def to_s
+      @url.to_s
+    end
+
     private def feed_ext
       "contains(@href, '.atom') or contains(@href, '.rss') or #{xml_ext}"
     end
