@@ -22,39 +22,45 @@ module WebsiteStruct
 
     # @return [Set<String>] all linked pages on the page
     def linked_pages
-      page_elements = "(//a[#{not_anchors} and #{not_images}]|\
+      @linked_pages ||= begin
+        page_elements = "(//a[#{not_anchors} and #{not_images}]|\
 //link[#{http_urls_only} and #{not_images}])"
 
-      hrefs(@page.xpath(page_elements)) -
-        news_feeds -
-        stylesheets
+        hrefs(@page.xpath(page_elements)) - news_feeds - stylesheets
+      end
     end
 
     # @return [Set<String>] all linked pages in the page's domain
     def linked_pages_in_domain
-      linked_pages.each_with_object(Set.new) do |url, linked_pages|
-        page_url = Addressable::URI.parse(url)
+      @linked_pages_in_domain ||= begin
+        linked_pages.each_with_object(Set.new) do |url, linked_pages|
+          page_url = Addressable::URI.parse(url)
 
-        next if outside_domain?(page_url)
+          next if outside_domain?(page_url)
 
-        linked_pages << normalize(@url.join(page_url)).to_s
+          linked_pages << normalize(@url.join(page_url)).to_s
+        end
       end
     end
 
     # @return [Set<String> all syndicated news feeds on the page
     def news_feeds
-      feed_elements =
-        "(//a[#{feed_ext}]|\//link[#{feed_mime_type} or #{xml_ext}])"
+      @news_feeds ||= begin
+        feed_elements =
+          "(//a[#{feed_ext}]|\//link[#{feed_mime_type} or #{xml_ext}])"
 
-      hrefs(@page.xpath(feed_elements))
+        hrefs(@page.xpath(feed_elements))
+      end
     end
 
     # @return [Set<String] all stylesheets on the page
     def stylesheets
-      stylesheet_elements =
-        "(//link[@type='text/css']|//link[@rel='stylesheet'])"
+      @stylesheets ||= begin
+        stylesheet_elements =
+          "(//link[@type='text/css']|//link[@rel='stylesheet'])"
 
-      hrefs(@page.xpath(stylesheet_elements))
+        hrefs(@page.xpath(stylesheet_elements))
+      end
     end
 
     private def hrefs(elements)
