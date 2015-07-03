@@ -252,7 +252,7 @@ DigitalOcean"
 
       context "relative URL" do
         context "relative to a resource" do
-          it "normalizes it to an absolute URL" do
+          it "gets normalized to an absolute URL" do
             expect(subject.linked_pages_in_domain).
               to include("https://google.com/index.html").
               and include("https://google.com/relative-link").
@@ -263,7 +263,7 @@ DigitalOcean"
 
         context "without a scheme" do
           context "host domain" do
-            it "normalizes it to an absolute URL" do
+            it "gets normalized to an absolute URL" do
               expect(subject.linked_pages_in_domain).
                 to include("https://google.com/no-scheme")
             end
@@ -288,7 +288,7 @@ DigitalOcean"
       end
 
       context "URL with a query and fragment" do
-        it "normalizes it to an absolute URL with no query and fragment"  do
+        it "gets normalized to an absolute URL with no query and fragment"  do
           expect(subject.linked_pages_in_domain).to exclude("/labs?foo=bar").
             and include("https://google.com/labs")
         end
