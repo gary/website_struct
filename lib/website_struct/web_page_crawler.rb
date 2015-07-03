@@ -7,6 +7,10 @@ module WebsiteStruct
   # Web page crawler responsible for finding links within the host
   # domain and static assets associated with the url
   class WebPageCrawler
+    # @!attribute [r] url
+    #   @return the absolute URL of the web page to be crawled
+    attr_reader :url
+
     # @param [String] url the absolute URL of the page to crawl
     # @param [#open] opener interface for opening URLs
     # @raise [ArgumentError] if the URL is not absolute or is not a
