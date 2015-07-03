@@ -24,6 +24,12 @@ module WebsiteStruct
       @page = Nokogiri::HTML(opener.open(@url))
     end
 
+    # @return [String] The WebPageCrawler object's state, as a
+    #   <code>String</code.
+    def inspect
+      format("#<%s:%#0x url:%s>", self.class.to_s, object_id, to_s)
+    end
+
     # @return [Set<String>] all linked pages on the page
     def linked_pages
       @linked_pages ||= begin

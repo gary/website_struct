@@ -49,6 +49,16 @@ describe WebPageCrawler do
     end
   end
 
+  describe "#inspect" do
+    let(:url) { "http://digitalocean.com" }
+    subject { crawler.new(url, fake).inspect }
+
+    it "returns a String representation of the crawler object's state" do
+      expect(subject).
+        to match(/\A#<WebsiteStruct::WebPageCrawler:0x[0-9a-f]+\surl:#{url}/)
+    end
+  end
+
   describe "#linked_pages" do
     context "test link fixture" do
       context "absolute URLs" do
