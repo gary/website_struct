@@ -30,9 +30,9 @@ module WebsiteStruct
         stylesheets
     end
 
-    # @return [Array<String>] all linked pages in the page's domain
+    # @return [Set<String>] all linked pages in the page's domain
     def linked_pages_in_domain
-      linked_pages.each_with_object([]) do |url, linked_pages|
+      linked_pages.each_with_object(Set.new) do |url, linked_pages|
         page_url = Addressable::URI.parse(url)
 
         next if outside_domain?(page_url)
