@@ -286,6 +286,13 @@ DigitalOcean"
           end
         end
       end
+
+      context "URL with a query and fragment" do
+        it "normalizes it to an absolute URL with no query and fragment"  do
+          expect(subject.linked_pages_in_domain).to exclude("/labs?foo=bar").
+            and include("https://google.com/labs")
+        end
+      end
     end
   end
 

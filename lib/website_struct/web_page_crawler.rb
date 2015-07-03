@@ -36,7 +36,7 @@ module WebsiteStruct
 
         next if outside_domain?(page_url)
 
-        linked_pages << @url.join(page_url).to_s
+        linked_pages << normalize(@url.join(page_url)).to_s
       end
     end
 
@@ -70,6 +70,14 @@ module WebsiteStruct
 
     private def http_urls_only
       "(starts-with(@href, 'http') or starts-with(@href, '/')) and not(@type)"
+    end
+
+    private def normalize(url)
+      page_url = Addressable::URI.parse(url)
+      if page_url.query || page_url.fragment
+        return Addressable::URI.parse(page_url.site + page_url.path)
+      end
+      page_url
     end
 
     private def not_anchors
