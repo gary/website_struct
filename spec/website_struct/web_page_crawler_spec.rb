@@ -294,6 +294,104 @@ DigitalOcean"
         end
       end
     end
+
+    context "wikipedia", vcr: vcr_options do
+      subject(:digital_ocean) do
+        described_class.new("https://en.wikipedia.org/wiki/DigitalOcean")
+      end
+
+      context "absolute URL" do
+        context "host domain" do
+          specify do
+            expect(digital_ocean.linked_pages_in_domain).
+              to include("https://en.wikipedia.org/w/index.php").
+              and include("https://en.wikipedia.org/wiki/DigitalOcean")
+          end
+        end
+
+        context "subdomain" do
+          let(:subdomain) do
+            "https://donate.wikimedia.org/wiki/Special:FundraiserRedirector"
+          end
+
+          specify do
+            expect(digital_ocean.linked_pages_in_domain).
+              to exclude(subdomain)
+          end
+        end
+
+        context "outside host domain" do
+          let(:other_domain) do
+            "https://www.mediawiki.org/wiki/Special:MyLanguage/\
+How_to_contribute"
+          end
+
+          specify do
+            expect(digital_ocean.linked_pages_in_domain).
+              to exclude(other_domain)
+          end
+        end
+      end
+
+      context "relative URL" do
+        context "relative to a resource" do
+          it "normalizes it to an absolute URL" do
+            expect(digital_ocean.linked_pages_in_domain).
+              to exclude("/wiki/Amazon_S3").
+              and include("https://en.wikipedia.org/wiki/Amazon_S3")
+          end
+        end
+
+        context "without a scheme" do
+          context "host domain" do
+            let(:contact_us) do
+              "//en.wikipedia.org/wiki/Wikipedia:Contact_us"
+            end
+
+            it "normalizes it to an absolute URL" do
+              expect(digital_ocean.linked_pages_in_domain).
+                to exclude(contact_us).and include("https:#{contact_us}")
+            end
+          end
+
+          context "subdomain" do
+            specify do
+              expect(digital_ocean.linked_pages_in_domain).
+                to exclude("//en.m.wikipedia.org/w/index.php")
+            end
+          end
+
+          context "outside host domain" do
+            specify do
+              expect(digital_ocean.linked_pages_in_domain).
+                to exclude("//www.mediawiki.org/")
+            end
+          end
+        end
+      end
+
+      context "URL with a fragment" do
+        let(:entry) do
+          "https://en.wikipedia.org/wiki/Infrastructure_as_a_service"
+        end
+
+        it "normalizes it to an absolute URL with no fragment"  do
+          expect(digital_ocean.linked_pages_in_domain).
+            to exclude("#{entry}#Infrastructure").
+            and include(entry)
+        end
+      end
+
+      context "URL with a query" do
+        let(:query) { "?title=DigitalOcean&action=edit" }
+        let(:url)   { "https://en.wikipedia.org/w/index.php" }
+
+        it "normalizes it to an absolute URL with no query" do
+          expect(digital_ocean.linked_pages_in_domain).
+            to exclude(url + query).and include(url)
+        end
+      end
+    end
   end
 
   describe "#news_feeds" do
