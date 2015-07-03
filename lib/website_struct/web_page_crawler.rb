@@ -22,7 +22,8 @@ module WebsiteStruct
 
     # @return [Set<String>] all linked pages on the page
     def linked_pages
-      page_elements = "(//a[#{not_anchors}]|//link[#{http_urls_only}])"
+      page_elements = "(//a[#{not_anchors} and #{not_images}]|\
+//link[#{http_urls_only} and #{not_images}])"
 
       hrefs(@page.xpath(page_elements)) -
         news_feeds -
@@ -82,6 +83,12 @@ module WebsiteStruct
 
     private def not_anchors
       "@href and not(starts-with(@href, '#'))"
+    end
+
+    private def not_images
+      "not(contains(@href, '.gif') or contains(@href, '.ico') or \
+contains(@href, '.jpg') or contains(@href, '.jpeg') or \
+contains(@href, '.png') or contains(@href, '.svg'))"
     end
 
     private def outside_domain?(url)

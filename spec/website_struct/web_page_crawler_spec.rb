@@ -67,6 +67,17 @@ describe WebPageCrawler do
           end
         end
 
+        context "referencing images" do
+          specify do
+            expect(subject.linked_pages).
+              to exclude("https://google.com/from-a.gif").
+              and exclude("https://google.com/from-a.jpg").
+              and exclude("https://google.com/from-a.jpeg").
+              and exclude("https://google.com/from-link.png").
+              and exclude("https://google.com/from-a.svg")
+          end
+        end
+
         context "with non-HTTP(S) schemes" do
           specify do
             expect(subject.linked_pages).
@@ -77,10 +88,20 @@ describe WebPageCrawler do
 
       context "relative URLs" do
         context "path to a resource" do
-          specify do
-            expect(subject.linked_pages).to include("/relative-a").
-              and include("/relative-a-ext.html").
-              and include("/relative-link")
+          context "linked pages" do
+            specify do
+              expect(subject.linked_pages).to include("/relative-a").
+                and include("/relative-a-ext.html").
+                and include("/relative-link")
+            end
+          end
+
+          context "images" do
+            specify do
+              expect(subject.linked_pages).
+                to exclude("/google.ico").
+                and exclude("/static/apple-touch/google.png")
+            end
           end
         end
 
@@ -164,6 +185,12 @@ DigitalOcean"
         end
       end
 
+      context "referencing images" do
+        specify do
+          # TODO: none on live test page
+        end
+      end
+
       context "with non-HTTP(S) schemes" do
         specify do
           expect(subject.linked_pages).to exclude(url_with_android_scheme)
@@ -172,11 +199,23 @@ DigitalOcean"
 
       context "relative URLs" do
         context "path to a resource" do
-          specify do
-            expect(digital_ocean.linked_pages).
-              to include("/wiki/Techstars").
-              and include("/wiki/Seed_accelerator").
-              and include("/wiki/Amazon_Web_Services")
+          context "linked pages" do
+            specify do
+              expect(digital_ocean.linked_pages).
+                to include("/wiki/Techstars").
+                and include("/wiki/Seed_accelerator").
+                and include("/wiki/Amazon_Web_Services")
+            end
+          end
+
+          context "images" do
+            specify do
+              expect(digital_ocean.linked_pages).
+                to exclude("/static/apple-touch/wikipedia.png").
+                and exclude("/static/favicon/wikipedia.ico").
+                and exclude("/wiki/File:DigitalOcean_logo.png").
+                and exclude("/wiki/File:Node.js_logo.svg")
+            end
           end
         end
 
