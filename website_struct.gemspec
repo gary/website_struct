@@ -34,7 +34,7 @@ DESC
 
   spec.add_dependency "activerecord", "~> 4.2.3"
   spec.add_dependency "addressable", "~> 2.3.8"
-  spec.add_dependency "nokogiri", "~> 1.6.6"
+  spec.add_dependency "nokogiri", "~> 1.8.2"
   spec.add_dependency "pg"
 
   spec.add_development_dependency "bundler", "~> 1.10"
